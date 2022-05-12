@@ -1,0 +1,212 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+model buyers {
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(255)
+  tradingName         String?  @db.VarChar(255)
+  cashforceTax        String?  @db.VarChar(255)
+  responsibleName     String?  @db.VarChar(255)
+  responsibleEmail    String?  @db.VarChar(255)
+  responsiblePosition String?  @db.VarChar(255)
+  responsiblePhone    String?  @db.VarChar(255)
+  responsibleMobile   String?  @db.VarChar(255)
+  website             String?  @db.VarChar(255)
+  postalCode          String?  @db.VarChar(255)
+  address             String?  @db.VarChar(255)
+  number              String?  @db.VarChar(255)
+  complement          String?  @db.VarChar(255)
+  neighborhood        String?  @db.VarChar(255)
+  city                String?  @db.VarChar(255)
+  state               String?  @db.VarChar(255)
+  phoneNumber         String?  @db.VarChar(255)
+  situation           String?  @db.VarChar(255)
+  situationDate       String?  @db.VarChar(255)
+  createdAt           DateTime @db.DateTime(0)
+  updatedAt           DateTime @db.DateTime(0)
+  cnpjId              Int?
+  confirm             Boolean? @default(true)
+  email               String?  @db.VarChar(255)
+  cnpjs               cnpjs?   @relation(fields: [cnpjId], references: [id], map: "buyers_ibfk_1")
+  orders              orders[]
+
+  @@index([cnpjId], map: "cnpjId")
+}
+
+model cnpjs {
+  id          Int         @id @default(autoincrement())
+  cnpj        String      @unique(map: "cnpj") @db.VarChar(255)
+  companyType String      @db.VarChar(255)
+  createdAt   DateTime    @db.DateTime(0)
+  updatedAt   DateTime    @db.DateTime(0)
+  buyers      buyers[]
+  orders      orders[]
+  providers   providers[]
+  sponsors    sponsors[]
+}
+
+model offers {
+  id                    Int       @id @default(autoincrement())
+  tax                   String    @db.VarChar(255)
+  tariff                String    @db.VarChar(255)
+  adValorem             String    @db.VarChar(255)
+  float                 String    @db.VarChar(255)
+  iof                   String    @db.VarChar(255)
+  expiresIn             DateTime  @db.DateTime(0)
+  paymentStatusSponsor  Boolean?  @default(false)
+  paymentStatusProvider Boolean?  @default(false)
+  createdAt             DateTime  @db.DateTime(0)
+  updatedAt             DateTime  @db.DateTime(0)
+  orderId               Int?
+  sponsorId             Int?
+  orders                orders?   @relation(fields: [orderId], references: [id], map: "offers_ibfk_61")
+  sponsors              sponsors? @relation(fields: [sponsorId], references: [id], map: "offers_ibfk_62")
+
+  @@index([orderId], map: "orderId")
+  @@index([sponsorId], map: "sponsorId")
+}
+
+model orderportions {
+  id                Int      @id @default(autoincrement())
+  nDup              String   @db.VarChar(255)
+  dVenc             String   @db.VarChar(255)
+  vDup              String   @db.VarChar(255)
+  availableToMarket Boolean? @default(true)
+  createdAt         DateTime @db.DateTime(0)
+  updatedAt         DateTime @db.DateTime(0)
+  orderId           Int?
+  orders            orders?  @relation(fields: [orderId], references: [id], map: "orderPortions_ibfk_1")
+
+  @@index([orderId], map: "orderId")
+}
+
+model orders {
+  id                  Int             @id @default(autoincrement())
+  orderNfId           String          @unique(map: "orderNfId") @db.VarChar(255)
+  orderNumber         String          @db.VarChar(255)
+  orderPath           String?         @unique(map: "orderPath") @db.VarChar(255)
+  orderFileName       String?         @unique(map: "orderFileName") @db.VarChar(255)
+  orderOriginalName   String?         @unique(map: "orderOriginalName") @db.VarChar(255)
+  emissionDate        String?         @db.VarChar(255)
+  pdfFile             String?         @db.VarChar(255)
+  emitedTo            String          @db.VarChar(255)
+  nNf                 String?         @db.VarChar(255)
+  CTE                 String?         @db.VarChar(255)
+  value               String?         @db.VarChar(255)
+  createdAt           DateTime        @db.DateTime(0)
+  updatedAt           DateTime        @db.DateTime(0)
+  cnpjId              Int?
+  userId              Int?
+  buyerId             Int?
+  providerId          Int?
+  orderStatusBuyer    String?         @default("0") @db.VarChar(255)
+  orderStatusProvider String?         @default("0") @db.VarChar(255)
+  deliveryReceipt     String?         @db.VarChar(255)
+  cargoPackingList    String?         @db.VarChar(255)
+  deliveryCtrc        String?         @db.VarChar(255)
+  buyers              buyers?         @relation(fields: [buyerId], references: [id], map: "orders_ibfk_139")
+  cnpjs               cnpjs?          @relation(fields: [cnpjId], references: [id], map: "orders_ibfk_141")
+  providers           providers?      @relation(fields: [providerId], references: [id], map: "orders_ibfk_140")
+  users               users?          @relation(fields: [userId], references: [id], map: "orders_ibfk_142")
+  offers              offers[]
+  orderportions       orderportions[]
+
+  @@index([buyerId], map: "buyerId")
+  @@index([cnpjId], map: "cnpjId")
+  @@index([providerId], map: "providerId")
+  @@index([userId], map: "userId")
+}
+
+model providers {
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(255)
+  tradingName         String?  @db.VarChar(255)
+  cashforceTax        String?  @db.VarChar(255)
+  responsibleName     String?  @db.VarChar(255)
+  responsibleEmail    String?  @db.VarChar(255)
+  responsiblePosition String?  @db.VarChar(255)
+  responsiblePhone    String?  @db.VarChar(255)
+  responsibleMobile   String?  @db.VarChar(255)
+  website             String?  @db.VarChar(255)
+  postalCode          String?  @db.VarChar(255)
+  address             String?  @db.VarChar(255)
+  number              String?  @db.VarChar(255)
+  complement          String?  @db.VarChar(255)
+  neighborhood        String?  @db.VarChar(255)
+  city                String?  @db.VarChar(255)
+  state               String?  @db.VarChar(255)
+  bank                String?  @db.VarChar(255)
+  bankAgency          String?  @db.VarChar(255)
+  account             String?  @db.VarChar(255)
+  documents           String?  @db.VarChar(255)
+  phoneNumber         String?  @db.VarChar(255)
+  situation           String?  @db.VarChar(255)
+  situationDate       String?  @db.VarChar(255)
+  createdAt           DateTime @db.DateTime(0)
+  updatedAt           DateTime @db.DateTime(0)
+  cnpjId              Int?
+  email               String?  @db.VarChar(255)
+  cnpjs               cnpjs?   @relation(fields: [cnpjId], references: [id], map: "providers_ibfk_1")
+  orders              orders[]
+
+  @@index([cnpjId], map: "cnpjId")
+}
+
+model sponsors {
+  id                  Int      @id @default(autoincrement())
+  name                String   @db.VarChar(255)
+  tradingName         String?  @db.VarChar(255)
+  cashforceTax        String?  @db.VarChar(255)
+  responsibleName     String?  @db.VarChar(255)
+  responsibleEmail    String?  @db.VarChar(255)
+  responsiblePosition String?  @db.VarChar(255)
+  responsiblePhone    String?  @db.VarChar(255)
+  responsibleMobile   String?  @db.VarChar(255)
+  website             String?  @db.VarChar(255)
+  postalCode          String?  @db.VarChar(255)
+  address             String?  @db.VarChar(255)
+  number              String?  @db.VarChar(255)
+  complement          String?  @db.VarChar(255)
+  neighborhood        String?  @db.VarChar(255)
+  city                String?  @db.VarChar(255)
+  state               String?  @db.VarChar(255)
+  bank                String?  @db.VarChar(255)
+  bankAgency          String?  @db.VarChar(255)
+  account             String?  @db.VarChar(255)
+  phoneNumber         String?  @db.VarChar(255)
+  situation           String?  @db.VarChar(255)
+  situationDate       String?  @db.VarChar(255)
+  createdAt           DateTime @db.DateTime(0)
+  updatedAt           DateTime @db.DateTime(0)
+  cnpjId              Int?
+  email               String?  @db.VarChar(255)
+  cnpjs               cnpjs?   @relation(fields: [cnpjId], references: [id], map: "sponsors_ibfk_1")
+  offers              offers[]
+
+  @@index([cnpjId], map: "cnpjId")
+}
+
+model users {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  email            String   @unique(map: "email") @db.VarChar(255)
+  phoneNumber      String?  @db.VarChar(255)
+  mobile           String?  @db.VarChar(255)
+  departament      String?  @db.VarChar(255)
+  verificationCode String?  @db.VarChar(255)
+  emailChecked     Boolean? @default(false)
+  createdAt        DateTime @db.DateTime(0)
+  updatedAt        DateTime @db.DateTime(0)
+  cashforceAdm     Boolean? @default(false)
+  orders           orders[]
+}
