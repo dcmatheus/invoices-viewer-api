@@ -3,7 +3,7 @@ import prisma from './connection';
 async function getOrders() {
   const orders = await prisma.orders.findMany({
     select: {
-      orderNumber: true,
+      nNf: true,
       emissionDate: true,
       value: true,
       orderStatusBuyer: true,
