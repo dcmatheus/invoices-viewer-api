@@ -14,7 +14,7 @@ Back End da aplicação [Invoices Viewer](https://github.com/dcmatheus/invoices-
     ```bash
     git clone git@github.com:dcmatheus/invoices-viewer-api.git
     ```
-
+- #### Entre na pasta do projeto.
 - #### Instale as dependências:
     ```bash
     npm install
