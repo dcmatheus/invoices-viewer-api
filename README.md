@@ -22,7 +22,7 @@ Back End da aplicação [Invoices Viewer](https://github.com/dcmatheus/invoices-
 
 - #### Adicione um `.env` na raiz do projeto com a chave `DATABASE_URL` recebendo como parâmetro a URL do seu banco MySQL.
     ```
-    BASE_URL='mysql://USER:PASSWORD@HOST:PORT/DATABASE'
+    DATABASE_URL='mysql://USER:PASSWORD@HOST:PORT/DATABASE'
     ```
     >Referência: https://www.prisma.io/docs/concepts/database-connectors/mysql
 
