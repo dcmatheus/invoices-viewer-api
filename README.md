@@ -20,24 +20,24 @@ Back End da aplicação [Invoices Viewer](https://github.com/dcmatheus/invoices-
     npm install
     ```
 
+- #### Adicione um `.env` na raiz do projeto com a chave `DATABASE_URL` recebendo como parâmetro a URL do seu banco MySQL.
+    ```
+    BASE_URL='mysql://USER:PASSWORD@HOST:PORT/DATABASE'
+    ```
+    >Referência: https://www.prisma.io/docs/concepts/database-connectors/mysql
+
+- #### *Caso o banco esteja vazio ou sem as tabelas corretas*, sincronize o banco com o schema:
+    > **ATENÇÃO**: Esse comando apagará o banco e irá recria-lo com os dados presentes nas seeds.
+    ```
+    npx prisma migrate dev
+    ```
+
 - #### Inicie a aplicação:
     ```bash
     npm run dev
     ```
 
->*A aplicação ficara disponível em http://localhost:3001*
----
-
-## Variáveis ​​de Ambiente
-
-Para que a aplicação funcione é necessário que exista um `.env` na raiz do projeto com a chave `DATABASE_URL`recebendo como parâmetro a URL do seu banco MySQL.
-
-Exemplo:
-```env
-DATABASE_URL='mysql://USER:PASSWORD@HOST:PORT/DATABASE'
-```
-
->Referência: https://www.prisma.io/docs/concepts/database-connectors/mysql
+>*A aplicação ficara disponível em http://localhost:3001/orders*
 
 ---
 
