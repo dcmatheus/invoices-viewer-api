@@ -7,32 +7,12 @@ import users from './data/users';
 
 const prisma = new PrismaClient();
 
-async function seedBuyers() {
-  await prisma.buyers.createMany({ data: buyers });
-}
-
-async function seedCnpjs() {
-  await prisma.cnpjs.createMany({ data: cnpjs });
-}
-
-async function seedOrders() {
-  await prisma.orders.createMany({ data: orders });
-}
-
-async function seedProviders() {
-  await prisma.providers.createMany({ data: providers });
-}
-
-async function seedUsers() {
-  await prisma.users.createMany({ data: users });
-}
-
 async function main() {
-  await seedUsers();
-  await seedCnpjs();
-  await seedProviders();
-  await seedBuyers();
-  await seedOrders();
+  await prisma.users.createMany({ data: users });
+  await prisma.cnpjs.createMany({ data: cnpjs });
+  await prisma.providers.createMany({ data: providers });
+  await prisma.buyers.createMany({ data: buyers });
+  await prisma.orders.createMany({ data: orders });
 }
 
 main().catch((e) => {
