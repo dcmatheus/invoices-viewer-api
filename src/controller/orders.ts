@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response } from 'express';
-import service from '../service/orders';
+import service from '../services/orders';
 
-// eslint-disable-next-line import/prefer-default-export
-export const getOrders = (_req: Request, res: Response) => {
-  const { code, message } = service.getOrders();
+async function getOrders(_req: Request, res: Response) {
+  const { code, message } = await service.getOrders();
   res.status(code).json(message);
-};
+}
+
+export default { getOrders };
